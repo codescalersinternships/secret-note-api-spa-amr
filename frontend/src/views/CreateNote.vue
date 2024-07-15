@@ -46,7 +46,7 @@ export default {
                 console.log('Note created:', response.data);
                 this.noteURL = `/${response.data.data.url}`;
             } catch (error) {
-                console.error('Error creating note:', error);
+                console.error('error creating note:', error);
             }
         }
     }

@@ -8,8 +8,10 @@ import (
 	"gorm.io/gorm"
 )
 
+// DB variable of type gorm to control the database
 var DB *gorm.DB
 
+// InitDatabase initialize a new sqlite database
 func InitDatabase() {
 	var err error
 	DB, err = gorm.Open(sqlite.Open("note.db"), &gorm.Config{})

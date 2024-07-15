@@ -30,9 +30,9 @@ export default {
                 this.note = response.data.data;
             } catch (error) {
                 if (error.response && error.response.status === 410) {
-                    this.error = 'This note has expired or reached its view limit.';
+                    this.error = 'this note has expired or reached its view limit.';
                 } else {
-                    this.error = 'Record not found!';
+                    this.error = 'record not found!';
                 }
             }
         }

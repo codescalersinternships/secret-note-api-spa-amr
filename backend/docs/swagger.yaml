@@ -1,0 +1,94 @@
+basePath: /
+definitions:
+  main.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  main.NoteResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.Note'
+      url:
+        type: string
+    type: object
+  model.Note:
+    properties:
+      content:
+        type: string
+      expire_after:
+        type: integer
+      id:
+        type: integer
+      max_views:
+        type: integer
+      publish_date:
+        type: string
+      url:
+        type: string
+      views:
+        type: integer
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: This is a simple API for sharing secret notes.
+  title: Secret Note API
+  version: "1.0"
+paths:
+  /:
+    post:
+      consumes:
+      - application/json
+      description: Create a new note with a unique URL
+      parameters:
+      - description: Note to create
+        in: body
+        name: note
+        required: true
+        schema:
+          $ref: '#/definitions/model.Note'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Note created successfully
+          schema:
+            $ref: '#/definitions/main.NoteResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Create a new note
+      tags:
+      - notes
+  /{url}:
+    get:
+      consumes:
+      - application/json
+      description: View a note content
+      parameters:
+      - description: Note URL
+        in: path
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Note retrieved successfully
+          schema:
+            $ref: '#/definitions/main.NoteResponse'
+        "400":
+          description: Record not found
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "410":
+          description: Note is expired
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: View a note
+      tags:
+      - notes
+swagger: "2.0"
