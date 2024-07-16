@@ -24,7 +24,9 @@ func InitServer(db *gorm.DB, port string) *gin.Engine {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	r.POST("/", func(c *gin.Context) { handlers.CreateNote(c, db, port) })
+	r.POST("/signup", func(c *gin.Context) { handlers.SignUp(c, db) })
+	r.POST("/signin", func(c *gin.Context) { handlers.SignIn(c, db) })
+	r.POST("/create", func(c *gin.Context) { handlers.CreateNote(c, db, port) })
 	r.GET("/:url", func(c *gin.Context) { handlers.ViewNote(c, db) })
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

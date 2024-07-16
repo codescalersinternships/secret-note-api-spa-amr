@@ -11,6 +11,8 @@ type Note struct {
 	ExpireAfter int       `json:"expire_after"`
 	Views       int       `json:"views"`
 	MaxViews    int       `json:"max_views"`
+	UserID      uint      `json:"user_id"`
+	User        User      `json:"user" gorm:"foreignKey:UserID"`
 }
 
 // NoteIsExpired method to check if a note is expired based on max views and expiration time
@@ -21,4 +23,3 @@ func (n *Note) NoteIsExpired() bool {
 	}
 	return false
 }
-

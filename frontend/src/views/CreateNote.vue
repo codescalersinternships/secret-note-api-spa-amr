@@ -1,57 +1,57 @@
 <template>
-<div class="container">
-    <h1>Create a Secret Note</h1>
-    <form @submit.prevent="createNote">
+    <div class="container">
+      <h1>Create a Secret Note</h1>
+      <form @submit.prevent="createNote">
         <label for="note_content">Note Content:</label>
         <textarea v-model="noteContent" id="note_content" name="content" placeholder="Enter your note here" rows="4"></textarea>
-
+  
         <label for="max_views">Maximum Views:</label>
         <input v-model="maxViews" type="number" id="max_views" name="maxViews" placeholder="Enter maximum views" value="1">
-
+  
         <label for="expiration">Expiration After:</label>
         <input v-model="expirationAfter" type="number" id="expiration_after" name="expireAfter" placeholder="Enter expiration time in hours" value="1">
-
+  
         <button type="submit">Create Note</button>
-    </form>
-
-    <div v-if="noteURL" class="note-created">
+      </form>
+  
+      <div v-if="noteURL" class="note-created">
         <h2>Note Created!</h2>
         <p>
-            <router-link :to="noteURL">{{ noteURL }}</router-link>
+          <router-link :to="noteURL">{{ noteURL }}</router-link>
         </p>
+      </div>
     </div>
-</div>
-</template>
-
-<script>
-import axios from 'axios';
-
-export default {
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  export default {
     data() {
-        return {
-            noteContent: '',
-            maxViews: 1,
-            expirationAfter: 1,
-            noteURL: ''
-        };
+      return {
+        noteContent: '',
+        maxViews: 1,
+        expirationAfter: 1,
+        noteURL: ''
+      };
     },
     methods: {
-        async createNote() {
-            try {
-                const response = await axios.post('http://localhost:8000/', {
-                    content: this.noteContent,
-                    max_views: this.maxViews,
-                    expire_after: this.expirationAfter
-                });
-                console.log('Note created:', response.data);
-                this.noteURL = `/${response.data.data.url}`;
-            } catch (error) {
-                console.error('error creating note:', error);
-            }
+      async createNote() {
+        try {
+          const response = await axios.post('http://localhost:8000/create', {
+            content: this.noteContent,
+            max_views: this.maxViews,
+            expire_after: this.expirationAfter,
+          });
+          console.log('Note created:', response.data);
+          this.noteURL = `/${response.data.data.url}`;
+        } catch (error) {
+          console.error('Error creating note:', error);
         }
+      }
     }
-};
-</script>
+  };
+  </script>
 
 <style>
 body {
