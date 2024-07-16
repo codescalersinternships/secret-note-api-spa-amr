@@ -1,11 +1,11 @@
 basePath: /
 definitions:
-  main.ErrorResponse:
+  handlers.ErrorResponse:
     properties:
       error:
         type: string
     type: object
-  main.NoteResponse:
+  handlers.NoteResponse:
     properties:
       data:
         $ref: '#/definitions/model.Note'
@@ -54,11 +54,11 @@ paths:
         "200":
           description: Note created successfully
           schema:
-            $ref: '#/definitions/main.NoteResponse'
+            $ref: '#/definitions/handlers.NoteResponse'
         "400":
           description: Invalid input
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/handlers.ErrorResponse'
       summary: Create a new note
       tags:
       - notes
@@ -79,15 +79,15 @@ paths:
         "200":
           description: Note retrieved successfully
           schema:
-            $ref: '#/definitions/main.NoteResponse'
+            $ref: '#/definitions/handlers.NoteResponse'
         "400":
           description: Record not found
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/handlers.ErrorResponse'
         "410":
           description: Note is expired
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/handlers.ErrorResponse'
       summary: View a note
       tags:
       - notes

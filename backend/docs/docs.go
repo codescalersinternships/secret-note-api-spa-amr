@@ -43,13 +43,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Note created successfully",
                         "schema": {
-                            "$ref": "#/definitions/main.NoteResponse"
+                            "$ref": "#/definitions/handlers.NoteResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid input",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/handlers.ErrorResponse"
                         }
                     }
                 }
@@ -81,19 +81,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Note retrieved successfully",
                         "schema": {
-                            "$ref": "#/definitions/main.NoteResponse"
+                            "$ref": "#/definitions/handlers.NoteResponse"
                         }
                     },
                     "400": {
                         "description": "Record not found",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/handlers.ErrorResponse"
                         }
                     },
                     "410": {
                         "description": "Note is expired",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/handlers.ErrorResponse"
                         }
                     }
                 }
@@ -101,7 +101,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "main.ErrorResponse": {
+        "handlers.ErrorResponse": {
             "type": "object",
             "properties": {
                 "error": {
@@ -109,7 +109,7 @@ const docTemplate = `{
                 }
             }
         },
-        "main.NoteResponse": {
+        "handlers.NoteResponse": {
             "type": "object",
             "properties": {
                 "data": {
