@@ -54,5 +54,6 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/time v0.5.0
 	gorm.io/driver/sqlite v1.5.6
 )

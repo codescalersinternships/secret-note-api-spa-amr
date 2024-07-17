@@ -5,6 +5,7 @@ import (
 
 	_ "github.com/codescalersinternships/secret-note-api-spa-amr/docs"
 	"github.com/codescalersinternships/secret-note-api-spa-amr/handlers"
+	"github.com/codescalersinternships/secret-note-api-spa-amr/middleware"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -23,6 +24,13 @@ func InitServer(db *gorm.DB, port string) *gin.Engine {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
+
+	// Rate limiting middleware
+	rateLimiter := middleware.NewRateLimiter(middleware.RateLimiterConfig{
+		Rate:  1,
+		Burst: 5,
+	})
+	r.Use(rateLimiter)
 
 	r.POST("/signup", func(c *gin.Context) { handlers.SignUp(c, db) })
 	r.POST("/signin", func(c *gin.Context) { handlers.SignIn(c, db) })
