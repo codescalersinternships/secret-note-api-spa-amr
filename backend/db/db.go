@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// InitDatabase initialize a new sqlite database
+// InitDatabase initializes a new sqlite database
 func InitDatabase() *gorm.DB {
 	DB, err := gorm.Open(sqlite.Open("note.db"), &gorm.Config{})
 	if err != nil {
