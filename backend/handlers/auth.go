@@ -27,6 +27,16 @@ type UserResponse struct {
 }
 
 // SignUp creates a new user
+// @Summary Create a new user
+// @Description Create a new user with the provided name and password
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param input body SignUpRequest true "User details"
+// @Success 200 {object} UserResponse "User created successfully"
+// @Failure 400 {object} ErrorResponse "Invalid input"
+// @Failure 500 {object} ErrorResponse "Failed to create user"
+// @Router /signup [post]
 func SignUp(c *gin.Context, db *gorm.DB) {
 	var input SignUpRequest
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -44,6 +54,16 @@ func SignUp(c *gin.Context, db *gorm.DB) {
 }
 
 // SignIn authenticates a user
+// @Summary Authenticate a user
+// @Description Authenticate a user with the provided name and password
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param input body SignInRequest true "User credentials"
+// @Success 200 {object} UserResponse "User authenticated successfully"
+// @Failure 400 {object} ErrorResponse "Invalid input"
+// @Failure 401 {object} ErrorResponse "Invalid credentials"
+// @Router /signin [post]
 func SignIn(c *gin.Context, db *gorm.DB) {
 	var input SignInRequest
 	if err := c.ShouldBindJSON(&input); err != nil {

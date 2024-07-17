@@ -12,22 +12,28 @@ definitions:
       url:
         type: string
     type: object
-  model.Note:
+  handlers.SignInRequest:
     properties:
-      content:
+      name:
         type: string
-      expire_after:
-        type: integer
+      password:
+        type: string
+    type: object
+  handlers.SignUpRequest:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  handlers.UserResponse:
+    properties:
       id:
         type: integer
-      max_views:
-        type: integer
-      publish_date:
+      name:
         type: string
-      url:
-        type: string
-      views:
-        type: integer
+    type: object
+  model.Note:
     type: object
 host: localhost:8000
 info:
@@ -91,4 +97,64 @@ paths:
       summary: View a note
       tags:
       - notes
+  /signin:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate a user with the provided name and password
+      parameters:
+      - description: User credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.SignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User authenticated successfully
+          schema:
+            $ref: '#/definitions/handlers.UserResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Authenticate a user
+      tags:
+      - users
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the provided name and password
+      parameters:
+      - description: User details
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User created successfully
+          schema:
+            $ref: '#/definitions/handlers.UserResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Failed to create user
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Create a new user
+      tags:
+      - users
 swagger: "2.0"
