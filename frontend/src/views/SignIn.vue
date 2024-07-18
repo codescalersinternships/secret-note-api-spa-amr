@@ -34,7 +34,7 @@
           });
           console.log('User signed in:', response.data);
   
-          localStorage.setItem('user', JSON.stringify(response.data));
+          sessionStorage.setItem('user', JSON.stringify(response.data));
   
           this.$router.push('/create');
         } catch (error) {
