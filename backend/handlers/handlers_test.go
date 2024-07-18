@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -17,18 +18,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func setupTestDB() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-	if err != nil {
-		log.Fatalf("failed to connect test database: %v", err)
-	}
-	db.AutoMigrate(&model.Note{}, &model.User{})
-	return db
-}
-
 func TestCreateNote(t *testing.T) {
 	db := setupTestDB()
-	defer db.Migrator().DropTable(&model.Note{}, &model.User{})
+	defer cleanupDB(db)
 
 	router := gin.Default()
 	router.POST("/create", func(c *gin.Context) { handlers.CreateNote(c, db, "8000") })
@@ -62,7 +54,7 @@ func TestCreateNote(t *testing.T) {
 
 func TestViewNote(t *testing.T) {
 	db := setupTestDB()
-	defer db.Migrator().DropTable(&model.Note{}, &model.User{})
+	defer cleanupDB(db)
 
 	note := model.Note{
 		URL:         "test-url",
@@ -103,7 +95,7 @@ func TestViewNote(t *testing.T) {
 
 func TestDatabaseIntegration(t *testing.T) {
 	db := setupTestDB()
-	defer db.Migrator().DropTable(&model.Note{}, &model.User{})
+	defer cleanupDB(db)
 
 	user := model.User{
 		Name:     "testuser",
@@ -125,4 +117,29 @@ func TestDatabaseIntegration(t *testing.T) {
 	result := db.First(&retrievedNote, "url = ?", note.URL)
 	assert.NoError(t, result.Error)
 	assert.Equal(t, note.Content, retrievedNote.Content)
+}
+
+// setupTestDB initializes a new test database
+func setupTestDB() *gorm.DB {
+	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("failed to connect test database: %v", err)
+	}
+	err = db.AutoMigrate(&model.Note{}, &model.User{})
+	if err != nil {
+		log.Fatalf("failed to migrate database: %v", err)
+	}
+	return db
+}
+
+// cleanupDB drops the tables after test execution
+func cleanupDB(db *gorm.DB) {
+	err := db.Migrator().DropTable(&model.Note{}, &model.User{})
+	if err != nil {
+		log.Fatalf("failed to drop tables: %v", err)
+	}
+	err = os.Remove("test.db")
+	if err != nil {
+		log.Fatalf("failed to delete test database file: %v", err)
+	}
 }
