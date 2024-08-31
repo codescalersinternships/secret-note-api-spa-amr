@@ -1,0 +1,160 @@
+basePath: /
+definitions:
+  handlers.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  handlers.NoteResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.Note'
+      url:
+        type: string
+    type: object
+  handlers.SignInRequest:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  handlers.SignUpRequest:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  handlers.UserResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  model.Note:
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: This is a simple API for sharing secret notes.
+  title: Secret Note API
+  version: "1.0"
+paths:
+  /:
+    post:
+      consumes:
+      - application/json
+      description: Create a new note with a unique URL
+      parameters:
+      - description: Note to create
+        in: body
+        name: note
+        required: true
+        schema:
+          $ref: '#/definitions/model.Note'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Note created successfully
+          schema:
+            $ref: '#/definitions/handlers.NoteResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Create a new note
+      tags:
+      - notes
+  /{url}:
+    get:
+      consumes:
+      - application/json
+      description: View a note content
+      parameters:
+      - description: Note URL
+        in: path
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Note retrieved successfully
+          schema:
+            $ref: '#/definitions/handlers.NoteResponse'
+        "400":
+          description: Record not found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "410":
+          description: Note is expired
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: View a note
+      tags:
+      - notes
+  /signin:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate a user with the provided name and password
+      parameters:
+      - description: User credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.SignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User authenticated successfully
+          schema:
+            $ref: '#/definitions/handlers.UserResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Authenticate a user
+      tags:
+      - users
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the provided name and password
+      parameters:
+      - description: User details
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User created successfully
+          schema:
+            $ref: '#/definitions/handlers.UserResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Failed to create user
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Create a new user
+      tags:
+      - users
+swagger: "2.0"
