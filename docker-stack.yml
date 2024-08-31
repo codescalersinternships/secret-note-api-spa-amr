@@ -2,9 +2,7 @@ version: '3.9'
 
 services:
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: eyadhussein/secret-front
     deploy:
       mode: replicated
       replicas: 1
@@ -13,9 +11,7 @@ services:
     depends_on:
       - backend
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: eyadhussein/secret-back
     deploy:
       mode: replicated
       replicas: 2
