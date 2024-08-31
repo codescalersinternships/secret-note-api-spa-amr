@@ -12,8 +12,6 @@ services:
       - '8090:8090'
     depends_on:
       - backend
-    # networks:
-    #   - appnet
   backend:
     build:
       context: ./backend
@@ -23,35 +21,3 @@ services:
       replicas: 2
     ports:
       - '8000:8000'
-    # networks:
-    #   - appnet
-    # depends_on:
-    #   - database
-  # database:
-  #   image: mysql:latest
-  #   deploy:
-  #     mode: replicated
-  #     replicas: 1
-  #   ports:
-  #     - 3366:3306
-  #   secrets:
-  #     - mysql_root_password
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
-  #     - MYSQL_DATABASE=secretnote
-  #   volumes:
-  #     - db_data:/var/lib/mysql
-  #   networks:
-  #     - appnet
-# secrets:
-#   mysql_root_password:
-#     external: true
-#   mysql_database_name:
-#     external: true
-
-# volumes:
-#   db_data:
-
-# networks:
-#   appnet:
-#     driver: overlay
