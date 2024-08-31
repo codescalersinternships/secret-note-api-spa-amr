@@ -78,6 +78,64 @@ Once the containers are up and running.
     - The content of the note will be displayed. If the note has expired or reached its view limit, you will see an appropriate message.
 
 
+## Running with Kubernetes
+
+### Prerequisites
+Ensure Minikube or another Kubernetes cluster is installed and running.
+
+### Deployment Steps
+
+1. **Start Minikube** (if not already running):
+    ```bash
+    minikube start
+    ```
+
+2. **Apply Kubernetes Configuration:**
+    Deploy the frontend and backend applications to Kubernetes using the provided YAML files.
+
+    **For the backend:**
+    ```bash
+    kubectl apply -f k8s/backend-deployment.yaml
+    kubectl apply -f k8s/backend-service.yaml
+    ```
+
+    **For the frontend:**
+    ```bash
+    kubectl apply -f k8s/frontend-deployment.yaml
+    kubectl apply -f k8s/frontend-service.yaml
+    ```
+
+3. **Check the Deployment Status:**
+    Verify that the pods are running and the services are set up correctly:
+    ```bash
+    kubectl get pods
+    kubectl get services
+    ```
+
+4. **Access the Application:**
+
+    **Frontend:**
+
+    - Get the Minikube IP:
+      ```bash
+      minikube ip
+      ```
+
+    - Access the frontend application at:
+      ```php
+      http://<Minikube_IP>:<NodePort>
+      ```
+      Replace `<Minikube_IP>` with the IP obtained and `<NodePort>` with the port from the `frontend-service` (e.g., `31591`).
+
+    **Backend:**
+
+    - Since the backend service is `ClusterIP`, it is only accessible from within the cluster. For local testing, you can use port forwarding:
+      ```bash
+      kubectl port-forward service/backend-service 8000:8000
+      ```
+
+    - Access the backend server at [http://localhost:8000/](http://localhost:8000/)
+
 
 ## API Documentation
 Swagger documentation is available at http://localhost:8000/swagger/index.html when the backend server is running.
